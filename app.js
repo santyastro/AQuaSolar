@@ -1,5 +1,5 @@
 function probarSistema() {
 
-    alert("¡AquaSolar está funcionando!");
+    alert("¡hola pop!");
 
 }
