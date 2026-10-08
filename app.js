@@ -8,8 +8,8 @@ function probarSistema() {
 function iniciarSesion() {
 
     let usuarioIngresado = document.getElementById("usuario").value;
-    let contrasenaIngresada = document.getElementById("contrasena").value;
+    let contraseniaIngresada = document.getElementById("contrasenia").value;
     alert("Usuario: " + usuarioIngresado);
-    alert("Contraseña: " + contrasenaIngresada);
+    alert("Contraseña: " + contraseniaIngresada);
 
 }
