@@ -1,40 +1,84 @@
 
+/* ==========================================================
+   AQUASOLAR | HOJA DE ESTILOS
+   ----------------------------------------------------------
+   Este archivo controla la apariencia de la aplicación:
+   colores, tamaños, tarjetas, botones, pestañas y adaptación
+   a diferentes pantallas.
+
+   nota:
+   Para cambiar los colores principales, empieza en :root.
+   Para cambiar una sección concreta, busca su número abajo.
+   ========================================================== */
+
+
+/* ==========================================================
+   1. COLORES Y CONFIGURACIÓN GENERAL
+   ========================================================== */
+
+/* Incluye los bordes y espacios interiores en el tamaño total
+   de los elementos. Esto facilita controlar sus dimensiones. */
 * {
     box-sizing: border-box;
 }
 
+/* PALETA DE COLORES
+   Cambia estos valores para modificar el tema de AquaSolar. */
 :root {
-    --verde: #24764b;
-    --verde-oscuro: #164b32;
-    --fondo: #f3f7f3;
-    --texto: #24352b;
-    --gris: #718078;
-    --borde: #e0e9e1;
+    --verde: #24764b;          /* Botones y detalles principales */
+    --verde-oscuro: #164b32;   /* Barra superior */
+    --verde-claro: #e8f3e9;    /* Fondos verdes suaves */
+    --fondo: #f3f7f3;           /* Fondo general */
+    --texto: #24352b;           /* Texto principal */
+    --gris: #718078;            /* Texto secundario */
+    --borde: #e0e9e1;           /* Bordes de tarjetas y campos */
+    --blanco: #ffffff;
 }
 
+/* Estilo general de toda la página. */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: var(--fondo);
     color: var(--texto);
+    line-height: 1.5;
 }
 
-button, input {
+/* Los controles utilizan la misma tipografía que la página. */
+button,
+input,
+select {
     font: inherit;
 }
 
+/* Estilo base de los botones. */
 button {
     cursor: pointer;
     border: none;
     border-radius: 9px;
     padding: 12px 16px;
+    transition: background-color 0.2s, transform 0.2s;
 }
 
-button:focus-visible, input:focus-visible {
+/* Pequeño movimiento al pasar el cursor sobre un botón. */
+button:hover {
+    transform: translateY(-1px);
+}
+
+/* Resalta los controles cuando se navega con el teclado. */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
     outline: 2px solid var(--verde);
     outline-offset: 2px;
 }
 
+
+/* ==========================================================
+   2. PANTALLA DE LOGIN
+   ========================================================== */
+
+/* Centra el formulario vertical y horizontalmente. */
 .login-page {
     min-height: 100vh;
     display: grid;
@@ -43,116 +87,249 @@ button:focus-visible, input:focus-visible {
     background: linear-gradient(145deg, #e1f3e5, #f7faf5);
 }
 
+/* Tarjeta blanca que contiene el acceso. */
 .login-card {
     width: 100%;
     max-width: 390px;
-    background: white;
+    background: var(--blanco);
     padding: 34px;
     border-radius: 20px;
     box-shadow: 0 12px 40px #164b3215;
 }
 
+/* Tamaño del logo o símbolo del login. */
 .logo {
     font-size: 38px;
 }
 
+/* Título de la pantalla de acceso. */
 .login-card h1 {
     margin-bottom: 5px;
     color: var(--verde-oscuro);
 }
 
-.subtitulo, .login-card small {
+/* Texto secundario del formulario. */
+.subtitulo,
+.login-card small {
     color: var(--gris);
 }
 
+/* Distribuye los elementos del formulario verticalmente. */
 form {
     display: grid;
     gap: 10px;
     margin-top: 25px;
 }
 
+/* Texto que identifica cada campo del formulario. */
 label {
     font-size: 14px;
     font-weight: bold;
 }
 
+/* Campos de entrada: usuario, contraseña y otros datos. */
 input {
     width: 100%;
     padding: 12px;
     border: 1px solid var(--borde);
     border-radius: 9px;
-    background: white;
+    background: var(--blanco);
     color: var(--texto);
 }
 
+/* Botón principal: iniciar sesión, guardar, etc. */
 .boton-principal {
     background: var(--verde);
-    color: white;
+    color: var(--blanco);
 }
 
+/* Color del botón principal cuando se pasa el cursor. */
 .boton-principal:hover {
     background: var(--verde-oscuro);
 }
 
+/* Botón secundario para acciones menos importantes. */
 .boton-secundario {
-    background: #e8f2e9;
+    background: var(--verde-claro);
     color: var(--verde-oscuro);
 }
 
+.boton-secundario:hover {
+    background: #d8eada;
+}
+
+/* Mensajes de error del formulario. */
 .mensaje {
     font-size: 13px;
     color: #b42318;
 }
 
+
+/* ==========================================================
+   3. CONTENEDOR PRINCIPAL
+   ========================================================== */
+
+/* Área que contiene la barra superior y las tres pestañas.
+
+   max-width: limita el ancho del contenido.
+   margin: auto: centra el dashboard.
+   padding: deja espacio debajo y a los lados.
+
+   El encabezado verde se extenderá hasta los bordes de
+   la ventana gracias a las reglas de la sección 4. */
 .dashboard {
     max-width: 1200px;
     margin: auto;
-    padding: 25px;
+    padding: 0 25px 25px;
 }
 
+/* IMPORTANTE:
+   JavaScript utiliza esta clase para ocultar pantallas.
+   No la elimines ni cambies su comportamiento. */
 .oculto {
     display: none !important;
 }
 
-.topbar, .marca, .usuario-info, .bienvenida,
-.fila-ajuste, .fila-estado {
+
+/* ==========================================================
+   4. BARRA VERDE SUPERIOR
+   ========================================================== */
+
+/* La barra y las pestañas comparten el fondo verde oscuro.
+
+   box-shadow extiende el color más allá del ancho del dashboard.
+   clip-path permite mostrar esa extensión sin crear una barra
+   horizontal de desplazamiento.
+
+   Si quieres cambiar el color de toda la cabecera, modifica
+   --verde-oscuro en la sección 1. */
+.topbar,
+.pestanas {
+    position: relative;
+    z-index: 0;
+    background: var(--verde-oscuro);
+    color: var(--blanco);
+
+    /* Extiende visualmente el fondo hasta ambos extremos. */
+    box-shadow: 0 0 0 100vmax var(--verde-oscuro);
+    clip-path: inset(0 -100vmax);
+}
+
+/* Organiza el logo, nombre del proyecto y datos del usuario. */
+.topbar,
+.marca,
+.usuario-info,
+.bienvenida,
+.fila-ajuste,
+.fila-estado {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
 }
 
+/* Espaciado interior de la barra superior. */
 .topbar {
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--borde);
+    padding: 22px 0 18px;
+    border-bottom: 1px solid #ffffff26;
 }
 
+/* Mantiene el logo y el nombre juntos a la izquierda. */
 .marca {
     justify-content: flex-start;
 }
 
+/* Tamaño del símbolo que acompaña a AquaSolar. */
 .marca-icono {
     font-size: 32px;
 }
 
-.marca h2, .marca small {
+/* Evita márgenes innecesarios en el nombre y subtítulo. */
+.marca h2,
+.marca small {
     margin: 0;
 }
 
-.marca small, .bienvenida p, .tarjeta p,
-.panel p, footer {
-    color: var(--gris);
+/* El subtítulo debe verse bien sobre el verde oscuro. */
+.marca small {
+    color: #d2e5d7;
 }
 
+/* Texto de la información de usuario en la cabecera. */
+.usuario-info {
+    color: #eef7ef;
+}
+
+
+/* ==========================================================
+   5. PESTAÑAS DE NAVEGACIÓN
+   ========================================================== */
+
+/* Las pestañas quedan pegadas a la barra superior para crear
+   una sola cabecera verde.
+
+   margin-top: 0 evita una separación entre las dos secciones.
+   margin-bottom deja espacio antes del contenido principal. */
+.pestanas {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 0 0 28px;
+    padding: 0 0 14px;
+    border-bottom: 1px solid #ffffff26;
+}
+
+/* Apariencia normal de cada pestaña. */
+.pestana {
+    background: transparent;
+    color: #d5e6d9;
+    border-radius: 9px 9px 0 0;
+    padding: 12px 17px;
+}
+
+/* Efecto al pasar el cursor por una pestaña. */
+.pestana:hover {
+    background: #ffffff16;
+    color: var(--blanco);
+}
+
+/* La pestaña activa se vuelve blanca.
+   Así se distingue de las otras sin perder el estilo verde. */
+.pestana.activa {
+    background: var(--blanco);
+    color: var(--verde-oscuro);
+    font-weight: bold;
+}
+
+/* Las vistas no seleccionadas permanecen ocultas.
+   JavaScript cambia las clases cuando eliges otra pestaña. */
+.vista.oculto {
+    display: none !important;
+}
+
+/* La pantalla seleccionada ocupa el espacio normalmente. */
+.vista.activa {
+    display: block;
+}
+
+
+/* ==========================================================
+   6. BIENVENIDA Y CONEXIÓN
+   ========================================================== */
+
+/* Separa el saludo del resto del contenido. */
 .bienvenida {
     margin: 30px 0;
 }
 
+/* Título principal de la pantalla de inicio. */
 .bienvenida h1 {
     margin: 6px 0;
     font-size: 32px;
+    line-height: 1.2;
 }
 
+/* Etiquetas pequeñas que identifican una sección. */
 .etiqueta {
     font-size: 12px;
     letter-spacing: 1.5px;
@@ -160,6 +337,7 @@ input {
     color: var(--verde) !important;
 }
 
+/* Pastilla que muestra el estado de conexión. */
 .estado-conexion {
     background: #e1f4e5;
     color: var(--verde-oscuro);
@@ -168,6 +346,7 @@ input {
     font-size: 13px;
 }
 
+/* Pequeño círculo verde junto al estado de conexión. */
 .punto-verde {
     display: inline-block;
     width: 8px;
@@ -177,25 +356,35 @@ input {
     margin-right: 5px;
 }
 
+
+/* ==========================================================
+   7. TARJETAS DE INFORMACIÓN
+   ========================================================== */
+
+/* Cuatro tarjetas por fila en pantallas grandes. */
 .tarjetas {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
 }
 
-.tarjeta, .panel {
-    background: white;
+/* Diseño compartido por tarjetas y paneles. */
+.tarjeta,
+.panel {
+    background: var(--blanco);
     padding: 22px;
     border: 1px solid var(--borde);
     border-radius: 15px;
     box-shadow: 0 4px 15px #164b3208;
 }
 
+/* Texto descriptivo de cada tarjeta. */
 .tarjeta p {
     margin-top: 0;
     font-size: 14px;
 }
 
+/* Alinea el valor y su unidad, por ejemplo: 42 %. */
 .dato {
     display: flex;
     align-items: baseline;
@@ -203,15 +392,19 @@ input {
     margin: 18px 0;
 }
 
+/* Número principal de una tarjeta. */
 .dato strong {
     font-size: 32px;
     overflow-wrap: anywhere;
 }
 
-.dato span, .tarjeta small {
+/* Unidades y textos secundarios. */
+.dato span,
+.tarjeta small {
     color: var(--gris);
 }
 
+/* Fondo de una barra de progreso. */
 .barra {
     height: 8px;
     background: #e6eee7;
@@ -220,6 +413,11 @@ input {
     margin-bottom: 12px;
 }
 
+/* Parte coloreada de la barra de progreso.
+
+   width: 42% es el valor inicial de ejemplo.
+   JavaScript puede modificar el ancho cuando se actualicen
+   los datos de humedad, batería u otro indicador. */
 .barra-progreso {
     height: 100%;
     width: 42%;
@@ -228,11 +426,18 @@ input {
     transition: width 0.3s;
 }
 
+/* El botón de una tarjeta ocupa todo su ancho. */
 .tarjeta .boton-principal {
     width: 100%;
     margin-top: 15px;
 }
 
+
+/* ==========================================================
+   8. PANELES Y AJUSTES
+   ========================================================== */
+
+/* Dos paneles lado a lado en computadoras. */
 .paneles {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -240,24 +445,29 @@ input {
     margin-top: 20px;
 }
 
+/* Títulos de los paneles. */
 .panel h3 {
     margin-top: 0;
 }
 
+/* Espacio encima de cada fila de configuración. */
 .fila-ajuste {
     margin-top: 15px;
 }
 
+/* Evita que los campos numéricos sean demasiado anchos. */
 .fila-ajuste input {
     max-width: 120px;
 }
 
+/* Filas de estado de sensores, válvulas u otros componentes. */
 .fila-estado {
     padding: 14px 0;
     border-bottom: 1px solid var(--borde);
     font-size: 14px;
 }
 
+/* Etiqueta amarilla para señalar información de demostración. */
 .etiqueta-demo {
     color: #76551a;
     background: #fff3d4;
@@ -267,81 +477,28 @@ input {
     text-align: right;
 }
 
+/* Hace que un botón o control ocupe todo el ancho disponible. */
 .ancho {
     width: 100%;
     margin-top: 18px;
 }
 
-footer {
-    text-align: center;
-    padding: 30px 0 10px;
-    font-size: 12px;
-}
 
-@media (max-width: 900px) {
-    .tarjetas {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
+/* ==========================================================
+   9. ENCABEZADOS Y AVISOS DE LAS PESTAÑAS
+   ========================================================== */
 
-@media (max-width: 600px) {
-    .dashboard {
-        padding: 16px;
-    }
-
-    .topbar, .bienvenida {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .paneles, .tarjetas {
-        grid-template-columns: 1fr;
-    }
-
-    .usuario-info {
-        width: 100%;
-    }
-
-    .bienvenida h1 {
-        font-size: 27px;
-    }
-}
-
-
-
-
-/* Navegación entre las pantallas */
-.pestanas {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin: 24px 0;
-    border-bottom: 1px solid var(--borde);
-    padding-bottom: 12px;
-}
-
-.pestana {
-    background: transparent;
-    color: var(--gris);
-}
-
-.pestana.activa {
-    background: var(--verde);
-    color: white;
-}
-
-.vista.oculto {
-    display: none !important;
-}
-
+/* Espaciado alrededor del título de cada pantalla. */
 .encabezado-vista {
     margin: 28px 0;
 }
 
+/* Ajusta el espacio bajo el título. */
 .encabezado-vista h1 {
     margin-bottom: 8px;
 }
 
+/* Aviso que explica que los datos son simulados o de prueba. */
 .aviso-demo {
     background: #fff3d4;
     color: #76551a;
@@ -351,12 +508,19 @@ footer {
     font-size: 14px;
 }
 
+
+/* ==========================================================
+   10. CONFIGURACIÓN DE LOS CANALES DE LA PCB
+   ========================================================== */
+
+/* Tres canales por fila en pantallas grandes. */
 .config-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
 }
 
+/* Organiza verticalmente la información de cada canal. */
 .canal {
     display: flex;
     flex-direction: column;
@@ -364,18 +528,22 @@ footer {
     min-width: 0;
 }
 
+/* Título de cada canal. */
 .canal h3 {
     margin-top: 0;
 }
 
+/* Menús desplegables de configuración. */
 .canal select {
     width: 100%;
     padding: 11px;
     border: 1px solid var(--borde);
     border-radius: 9px;
-    background: white;
+    background: var(--blanco);
+    color: var(--texto);
 }
 
+/* Nota o descripción breve de un canal. */
 .nota-canal {
     background: var(--fondo);
     padding: 10px;
@@ -383,16 +551,24 @@ footer {
     font-size: 13px;
 }
 
+/* Separa el botón de guardar de los controles anteriores. */
 .guardar-config {
     margin-top: 18px;
 }
 
+
+/* ==========================================================
+   11. ESTADO DE SENSORES, VÁLVULAS Y PLACA
+   ========================================================== */
+
+/* Cuatro indicadores por fila en pantallas grandes. */
 .estado-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
 }
 
+/* Centra el semáforo y su descripción. */
 .semaforo {
     display: flex;
     align-items: center;
@@ -401,18 +577,22 @@ footer {
     text-align: center;
 }
 
+/* Reduce el espacio bajo el título del indicador. */
 .semaforo h3 {
     margin-bottom: 0;
 }
 
+/* Texto que indica el estado actual. */
 .semaforo strong {
     font-size: 14px;
 }
 
+/* Descripción secundaria. */
 .semaforo small {
     color: var(--gris);
 }
 
+/* Forma básica de cada luz del semáforo. */
 .luz {
     width: 28px;
     height: 28px;
@@ -420,25 +600,38 @@ footer {
     display: inline-block;
 }
 
+/* Verde significa funcionamiento correcto. */
 .luz-verde {
     background: #28a45b;
     box-shadow: 0 0 14px #28a45b55;
 }
 
+/* Amarillo significa atención o estado pendiente. */
 .luz-amarilla {
     background: #e8ad28;
     box-shadow: 0 0 14px #e8ad2855;
 }
 
+/* Rojo significa error o componente detenido. */
 .luz-roja {
     background: #d93636;
     box-shadow: 0 0 14px #d9363655;
 }
 
+
+/* ==========================================================
+   12. GRÁFICA DE HUMEDAD
+   ========================================================== */
+
+/* Separa el panel de la gráfica de los anteriores. */
 .grafica-panel {
     margin-top: 20px;
 }
 
+/* Estilo del área de dibujo de la gráfica.
+
+   Si quieres una gráfica más alta, aumenta height.
+   Este estilo no genera los datos: eso corresponde a JavaScript. */
 #graficaHumedad {
     display: block;
     width: 100%;
@@ -446,44 +639,103 @@ footer {
     margin: 20px 0;
 }
 
+
+/* ==========================================================
+   13. PIE DE PÁGINA
+   ========================================================== */
+
+/* Texto discreto al final de la aplicación. */
+footer {
+    color: var(--gris);
+    text-align: center;
+    padding: 30px 0 10px;
+    font-size: 12px;
+}
+
+
+/* ==========================================================
+   14. ADAPTACIÓN A TABLETAS
+   ========================================================== */
+
+/* Estas reglas se activan cuando la pantalla mide 900 px
+   de ancho o menos. Reducimos las columnas para que el
+   contenido no quede demasiado apretado. */
 @media (max-width: 900px) {
-    .config-grid {
+    .tarjetas,
+    .estado-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .estado-grid {
+    .config-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
+
+/* ==========================================================
+   15. ADAPTACIÓN A CELULARES
+   ========================================================== */
+
+/* Estas reglas se activan en pantallas de 600 px o menos. */
 @media (max-width: 600px) {
-    .config-grid, .estado-grid {
+
+    /* Menos espacio a los lados para aprovechar la pantalla. */
+    .dashboard {
+        padding: 0 16px 16px;
+    }
+
+    /* La cabecera y la bienvenida se acomodan verticalmente. */
+    .topbar,
+    .bienvenida {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    /* Las tarjetas y paneles ocupan una columna. */
+    .paneles,
+    .tarjetas,
+    .config-grid,
+    .estado-grid {
         grid-template-columns: 1fr;
     }
 
+    /* La información del usuario puede ocupar varias líneas. */
+    .usuario-info {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    /* Título más pequeño para que quepa mejor. */
+    .bienvenida h1 {
+        font-size: 27px;
+    }
+
+    /* Las pestañas pueden ajustarse al ancho del teléfono. */
     .pestanas {
         align-items: stretch;
+        gap: 4px;
     }
 
     .pestana {
         flex: 1;
+        padding: 11px 9px;
+        font-size: 13px;
+    }
+
+    /* Menos relleno en el login para pantallas pequeñas. */
+    .login-card {
+        padding: 26px;
     }
 }
-/* Solo se muestra la pestaña seleccionada */
-.vista.oculto {
-    display: none !important;
-}
 
-.vista.activa {
-    display: block;
-}
 
-/* Separa la navegación del contenido */
-.pestanas {
-    margin-bottom: 28px;
-}
+/* ==========================================================
+   16. AJUSTES FINALES
+   ========================================================== */
 
-/* Evita que el contenido de las vistas se mezcle */
+/* Alinea los encabezados de las vistas justo debajo
+   de la navegación, sin un margen superior adicional. */
 .vista > .encabezado-vista {
     margin-top: 0;
 }
+
