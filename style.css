@@ -469,3 +469,21 @@ footer {
         flex: 1;
     }
 }
+/* Solo se muestra la pestaña seleccionada */
+.vista.oculto {
+    display: none !important;
+}
+
+.vista.activa {
+    display: block;
+}
+
+/* Separa la navegación del contenido */
+.pestanas {
+    margin-bottom: 28px;
+}
+
+/* Evita que el contenido de las vistas se mezcle */
+.vista > .encabezado-vista {
+    margin-top: 0;
+}
