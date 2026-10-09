@@ -57,7 +57,176 @@
                 </button>
             </div>
         </header>
+        
+<nav class="pestanas">
+    <button class="pestana activa" data-vista="vistaInicio">
+        Inicio
+    </button>
+    <button class="pestana" data-vista="vistaConfiguracion">
+        Configuración PCB
+    </button>
+    
+<section id="vistaEstado" class="vista oculto">
 
+    <div class="encabezado-vista">
+        <p class="etiqueta">SUPERVISIÓN DEL SISTEMA</p>
+        <h1>Estado de AquaSolar</h1>
+        <p>Semáforos de diagnóstico y evolución de la humedad.</p>
+    </div>
+
+    <div class="estado-grid">
+
+        <article class="panel semaforo">
+            <h3>Placa ESP32</h3>
+            <span id="luzPlaca" class="luz luz-amarilla"></span>
+            <strong id="textoPlaca">Sin conectar</strong>
+            <small>Estado de comunicación</small>
+        </article>
+
+        <article class="panel semaforo">
+            <h3>Válvula 1</h3>
+            <span id="luz1" class="luz luz-verde"></span>
+            <strong id="texto1">Disponible (simulado)</strong>
+            <small>Canal 1</small>
+        </article>
+
+        <article class="panel semaforo">
+            <h3>Válvula 2</h3>
+            <span id="luz2" class="luz luz-verde"></span>
+            <strong id="texto2">Disponible (simulado)</strong>
+            <small>Canal 2</small>
+        </article>
+
+        <article class="panel semaforo">
+            <h3>Válvula 3</h3>
+            <span id="luz3" class="luz luz-verde"></span>
+            <strong id="texto3">Disponible (simulado)</strong>
+            <small>Canal 3</small>
+        </article>
+
+    </div>
+
+    <article class="panel grafica-panel">
+        <h3>📈 Humedad del suelo a través del tiempo</h3>
+        <p>Lecturas simuladas en porcentaje (%).</p>
+
+        <canvas id="graficaHumedad" height="260">
+            Tu navegador no admite canvas.
+        </canvas>
+
+        <button id="btnNuevaLectura" class="boton-principal">
+            Generar nueva lectura
+        </button>
+    </article>
+
+</section>
+    <button class="pestana" data-vista="vistaEstado">
+        Estado y gráficas
+    </button>
+</nav>
+<section id="vistaInicio" class="vista activa"></section>
+
+<section id="vistaConfiguracion" class="vista oculto">
+
+    <div class="encabezado-vista">
+        <p class="etiqueta">PERSONALIZACIÓN DEL HARDWARE</p>
+        <h1>Configuración de la PCB</h1>
+        <p>Configura independientemente cada canal de riego.</p>
+    </div>
+
+    <div class="aviso-demo">
+        ⚠️ Configuración de demostración. No modifica el hardware real.
+    </div>
+
+    <div class="config-grid">
+
+        <article class="panel canal">
+            <h3>💧 Válvula 1</h3>
+
+            <label for="tipoValvula1">Tipo de accionamiento</label>
+            <select id="tipoValvula1">
+                <option value="mosfet">MOSFET — DC</option>
+                <option value="rele">Relevador</option>
+                <option value="puenteH">Puente H — motor</option>
+            </select>
+
+            <label for="pinValvula1">Canal de salida lógico</label>
+            <select id="pinValvula1">
+                <option value="canal1">Canal 1</option>
+                <option value="canal2">Canal 2</option>
+                <option value="canal3">Canal 3</option>
+            </select>
+
+            <label for="voltaje1">Tensión nominal de la válvula (V)</label>
+            <input id="voltaje1" type="number" min="0" value="12">
+
+            <p class="nota-canal" id="notaValvula1">
+                Carga DC compatible con MOSFET.
+            </p>
+        </article>
+
+        <article class="panel canal">
+            <h3>💧 Válvula 2</h3>
+
+            <label for="tipoValvula2">Tipo de accionamiento</label>
+            <select id="tipoValvula2">
+                <option value="mosfet">MOSFET — DC</option>
+                <option value="rele" selected>Relevador</option>
+                <option value="puenteH">Puente H — motor</option>
+            </select>
+
+            <label for="pinValvula2">Canal de salida lógico</label>
+            <select id="pinValvula2">
+                <option value="canal1">Canal 1</option>
+                <option value="canal2" selected>Canal 2</option>
+                <option value="canal3">Canal 3</option>
+            </select>
+
+            <label for="voltaje2">Tensión nominal de la válvula (V)</label>
+            <input id="voltaje2" type="number" min="0" value="12">
+
+            <p class="nota-canal" id="notaValvula2">
+                Carga conmutada mediante relevador compatible.
+            </p>
+        </article>
+
+        <article class="panel canal">
+            <h3>💧 Válvula 3</h3>
+
+            <label for="tipoValvula3">Tipo de accionamiento</label>
+            <select id="tipoValvula3">
+                <option value="mosfet">MOSFET — DC</option>
+                <option value="rele">Relevador</option>
+                <option value="puenteH" selected>Puente H — motor</option>
+            </select>
+
+            <label for="pinValvula3">Canal de salida lógico</label>
+            <select id="pinValvula3">
+                <option value="canal1">Canal 1</option>
+                <option value="canal2">Canal 2</option>
+                <option value="canal3" selected>Canal 3</option>
+            </select>
+
+            <label for="voltaje3">Tensión nominal de la válvula (V)</label>
+            <input id="voltaje3" type="number" min="0" value="12">
+
+            <p class="nota-canal" id="notaValvula3">
+                Motor compatible con puente H.
+            </p>
+        </article>
+
+    </div>
+
+    <div class="panel guardar-config">
+        <h3>Guardar configuración</h3>
+        <p>Por ahora se conserva en este navegador, como prototipo.</p>
+        <button id="btnGuardarPCB" class="boton-principal">
+            Guardar configuración
+        </button>
+        <p id="mensajePCB" class="mensaje"></p>
+    </div>
+
+</section>
         <section class="bienvenida">
             <div>
                 <p class="etiqueta">PANEL DE CONTROL</p>
@@ -161,7 +330,7 @@
             </article>
 
         </section>
-
+</section>
         <footer>
             AquaSolar · Prototipo de riego inteligente · 2026
         </footer>

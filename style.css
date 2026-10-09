@@ -306,3 +306,166 @@ footer {
         font-size: 27px;
     }
 }
+
+
+
+
+/* Navegación entre las pantallas */
+.pestanas {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 24px 0;
+    border-bottom: 1px solid var(--borde);
+    padding-bottom: 12px;
+}
+
+.pestana {
+    background: transparent;
+    color: var(--gris);
+}
+
+.pestana.activa {
+    background: var(--verde);
+    color: white;
+}
+
+.vista.oculto {
+    display: none !important;
+}
+
+.encabezado-vista {
+    margin: 28px 0;
+}
+
+.encabezado-vista h1 {
+    margin-bottom: 8px;
+}
+
+.aviso-demo {
+    background: #fff3d4;
+    color: #76551a;
+    padding: 14px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.config-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.canal {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.canal h3 {
+    margin-top: 0;
+}
+
+.canal select {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid var(--borde);
+    border-radius: 9px;
+    background: white;
+}
+
+.nota-canal {
+    background: var(--fondo);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.guardar-config {
+    margin-top: 18px;
+}
+
+.estado-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.semaforo {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+}
+
+.semaforo h3 {
+    margin-bottom: 0;
+}
+
+.semaforo strong {
+    font-size: 14px;
+}
+
+.semaforo small {
+    color: var(--gris);
+}
+
+.luz {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.luz-verde {
+    background: #28a45b;
+    box-shadow: 0 0 14px #28a45b55;
+}
+
+.luz-amarilla {
+    background: #e8ad28;
+    box-shadow: 0 0 14px #e8ad2855;
+}
+
+.luz-roja {
+    background: #d93636;
+    box-shadow: 0 0 14px #d9363655;
+}
+
+.grafica-panel {
+    margin-top: 20px;
+}
+
+#graficaHumedad {
+    display: block;
+    width: 100%;
+    height: 260px;
+    margin: 20px 0;
+}
+
+@media (max-width: 900px) {
+    .config-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .estado-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .config-grid, .estado-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pestanas {
+        align-items: stretch;
+    }
+
+    .pestana {
+        flex: 1;
+    }
+}

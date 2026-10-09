@@ -94,3 +94,191 @@ document.getElementById("btnSalir").addEventListener("click", function() {
 
 // Muestra los valores iniciales.
 actualizarDashboard();
+
+
+const nombresAccionamiento = {
+    mosfet: "Carga DC compatible con MOSFET.",
+    rele: "Carga conmutada mediante relevador compatible.",
+    puenteH: "Motor compatible con puente H."
+};
+
+// Cambia de pestaña sin recargar la página.
+document.querySelectorAll(".pestana").forEach(function(boton) {
+    boton.addEventListener("click", function() {
+        document.querySelectorAll(".pestana").forEach(function(pestana) {
+            pestana.classList.remove("activa");
+        });
+
+        document.querySelectorAll(".vista").forEach(function(vista) {
+            vista.classList.add("oculto");
+        });
+
+        boton.classList.add("activa");
+
+        document.getElementById(boton.dataset.vista)
+            .classList.remove("oculto");
+
+        if (boton.dataset.vista === "vistaEstado") {
+            dibujarGrafica();
+        }
+    });
+});
+
+// Muestra una descripción según el accionamiento elegido.
+[1, 2, 3].forEach(function(numero) {
+    const selector = document.getElementById("tipoValvula" + numero);
+    const nota = document.getElementById("notaValvula" + numero);
+
+    selector.addEventListener("change", function() {
+        nota.textContent = nombresAccionamiento[selector.value];
+    });
+});
+
+// Guarda los ajustes localmente en este navegador.
+document.getElementById("btnGuardarPCB").addEventListener("click", function() {
+    const configuracion = [];
+    const canales = new Set();
+
+    for (let numero = 1; numero <= 3; numero++) {
+        const tipo = document.getElementById("tipoValvula" + numero).value;
+        const canal = document.getElementById("pinValvula" + numero).value;
+        const voltaje = Number(document.getElementById("voltaje" + numero).value);
+
+        if (!Number.isFinite(voltaje) || voltaje <= 0) {
+            document.getElementById("mensajePCB").textContent =
+                "Revisa la tensión de la válvula " + numero + ".";
+            return;
+        }
+
+        if (canales.has(canal)) {
+            document.getElementById("mensajePCB").textContent =
+                "Cada válvula debe tener un canal lógico distinto.";
+            return;
+        }
+
+        canales.add(canal);
+        configuracion.push({ tipo, canal, voltaje });
+    }
+
+    localStorage.setItem("configuracionAquaSolar", JSON.stringify(configuracion));
+
+    document.getElementById("mensajePCB").textContent =
+        "Configuración guardada en este navegador.";
+});
+
+// Recupera la configuración anterior, si existe.
+const configuracionGuardada =
+    JSON.parse(localStorage.getItem("configuracionAquaSolar") || "null");
+
+if (configuracionGuardada) {
+    configuracionGuardada.forEach(function(config, indice) {
+        const numero = indice + 1;
+
+        document.getElementById("tipoValvula" + numero).value = config.tipo;
+        document.getElementById("pinValvula" + numero).value = config.canal;
+        document.getElementById("voltaje" + numero).value = config.voltaje;
+        document.getElementById("notaValvula" + numero).textContent =
+            nombresAccionamiento[config.tipo];
+    });
+}
+
+// Historial de prueba para la gráfica.
+let historialHumedad = [42, 44, 43, 46, 49, 47, 52, 50, 54, 57, 55, 60];
+
+function dibujarGrafica() {
+    const canvas = document.getElementById("graficaHumedad");
+    const contexto = canvas.getContext("2d");
+
+    const ancho = canvas.clientWidth;
+    const alto = 260;
+    const escala = window.devicePixelRatio || 1;
+
+    canvas.width = ancho * escala;
+    canvas.height = alto * escala;
+    contexto.setTransform(escala, 0, 0, escala, 0, 0);
+    contexto.clearRect(0, 0, ancho, alto);
+
+    const margenIzquierdo = 38;
+    const margenDerecho = 12;
+    const margenArriba = 15;
+    const margenAbajo = 28;
+
+    const graficaAncho = ancho - margenIzquierdo - margenDerecho;
+    const graficaAlto = alto - margenArriba - margenAbajo;
+
+    // Dibujamos las líneas de referencia del porcentaje.
+    contexto.font = "12px Arial";
+    contexto.textAlign = "right";
+    contexto.textBaseline = "middle";
+
+    [0, 25, 50, 75, 100].forEach(function(valor) {
+        const y = margenArriba + graficaAlto * (1 - valor / 100);
+
+        contexto.beginPath();
+        contexto.strokeStyle = "#e0e9e1";
+        contexto.moveTo(margenIzquierdo, y);
+        contexto.lineTo(ancho - margenDerecho, y);
+        contexto.stroke();
+
+        contexto.fillStyle = "#718078";
+        contexto.fillText(valor + "%", margenIzquierdo - 8, y);
+    });
+
+    // Convertimos las lecturas en puntos y los unimos.
+    contexto.beginPath();
+    contexto.strokeStyle = "#24764b";
+    contexto.lineWidth = 3;
+
+    historialHumedad.forEach(function(valor, indice) {
+        const x = margenIzquierdo +
+            (indice / Math.max(historialHumedad.length - 1, 1)) * graficaAncho;
+
+        const y = margenArriba + graficaAlto * (1 - valor / 100);
+
+        if (indice === 0) {
+            contexto.moveTo(x, y);
+        } else {
+            contexto.lineTo(x, y);
+        }
+    });
+
+    contexto.stroke();
+
+    // Marcamos cada lectura.
+    historialHumedad.forEach(function(valor, indice) {
+        const x = margenIzquierdo +
+            (indice / Math.max(historialHumedad.length - 1, 1)) * graficaAncho;
+
+        const y = margenArriba + graficaAlto * (1 - valor / 100);
+
+        contexto.beginPath();
+        contexto.fillStyle = "#24764b";
+        contexto.arc(x, y, 4, 0, Math.PI * 2);
+        contexto.fill();
+    });
+
+    contexto.textAlign = "center";
+    contexto.textBaseline = "alphabetic";
+    contexto.fillStyle = "#718078";
+    contexto.fillText("Lecturas consecutivas", ancho / 2, alto - 5);
+}
+
+// Agrega una nueva lectura ficticia a la gráfica.
+document.getElementById("btnNuevaLectura").addEventListener("click", function() {
+    const nuevaLectura = Math.floor(Math.random() * 71) + 20;
+
+    historialHumedad.push(nuevaLectura);
+
+    if (historialHumedad.length > 20) {
+        historialHumedad.shift();
+    }
+
+    dibujarGrafica();
+});
+
+// Ajusta la gráfica si cambia el ancho de la ventana.
+window.addEventListener("resize", function() {
+    if (!document.getElementById("vistaEstado").classList.contains("oculto")) {
+        dibujarGrafica();
+    }
+});
