@@ -34,7 +34,7 @@
                 <p id="mensajeLogin" class="mensaje"></p>
             </form>
 
-            <small>Prototipo para que javi me deje ir al bimbo</small>
+            <small>Prototipo </small>
         </div>
     </section>
 
@@ -58,73 +58,25 @@
             </div>
         </header>
         
-<nav class="pestanas">
-    <button class="pestana activa" data-vista="vistaInicio">
-        Inicio
-    </button>
-    <button class="pestana" data-vista="vistaConfiguracion">
-        Configuración PCB
-    </button>
-    
-<section id="vistaEstado" class="vista oculto">
 
-    <div class="encabezado-vista">
-        <p class="etiqueta">SUPERVISIÓN DEL SISTEMA</p>
-        <h1>Estado de AquaSolar</h1>
-        <p>Semáforos de diagnóstico y evolución de la humedad.</p>
-    </div>
-
-    <div class="estado-grid">
-
-        <article class="panel semaforo">
-            <h3>Placa ESP32</h3>
-            <span id="luzPlaca" class="luz luz-amarilla"></span>
-            <strong id="textoPlaca">Sin conectar</strong>
-            <small>Estado de comunicación</small>
-        </article>
-
-        <article class="panel semaforo">
-            <h3>Válvula 1</h3>
-            <span id="luz1" class="luz luz-verde"></span>
-            <strong id="texto1">Disponible (simulado)</strong>
-            <small>Canal 1</small>
-        </article>
-
-        <article class="panel semaforo">
-            <h3>Válvula 2</h3>
-            <span id="luz2" class="luz luz-verde"></span>
-            <strong id="texto2">Disponible (simulado)</strong>
-            <small>Canal 2</small>
-        </article>
-
-        <article class="panel semaforo">
-            <h3>Válvula 3</h3>
-            <span id="luz3" class="luz luz-verde"></span>
-            <strong id="texto3">Disponible (simulado)</strong>
-            <small>Canal 3</small>
-        </article>
-
-    </div>
-
-    <article class="panel grafica-panel">
-        <h3>📈 Humedad del suelo a través del tiempo</h3>
-        <p>Lecturas simuladas en porcentaje (%).</p>
-
-        <canvas id="graficaHumedad" height="260">
-            Tu navegador no admite canvas.
-        </canvas>
-
-        <button id="btnNuevaLectura" class="boton-principal ">
-            Generar nueva lectura
+    <nav class="pestanas">
+        <button class="pestana activa" data-vista="vistaInicio">
+            Inicio
         </button>
-    </article>
+        <button class="pestana" data-vista="vistaConfiguracion">
+            Configuración PCB
+        </button>
+        <button class="pestana" data-vista="vistaEstado">
+            Estado y gráficas
+        </button>
+    </nav>
 
-</section>
-    <button class="pestana" data-vista="vistaEstado">
-        Estado y gráficas
-    </button>
-</nav>
-<section id="vistaInicio" class="vista activa"></section>
+    <!-- Cada pestaña tiene su propia sección independiente -->
+    <section id="vistaInicio" class="vista activa">
+
+        <!-- AQUÍ VA TODO EL CONTENIDO DEL DASHBOARD INICIAL -->
+
+    </section>
 
 <section id="vistaConfiguracion" class="vista oculto">
 
@@ -135,13 +87,13 @@
     </div>
 
     <div class="aviso-demo">
-        ⚠️ Configuración de demostración. No modifica el hardware real.
+         Configuración de demostración. No modifica el hardware real.
     </div>
 
     <div class="config-grid">
 
         <article class="panel canal">
-            <h3>💧 Válvula 1</h3>
+            <h3> Válvula 1</h3>
 
             <label for="tipoValvula1">Tipo de accionamiento</label>
             <select id="tipoValvula1">
@@ -166,7 +118,7 @@
         </article>
 
         <article class="panel canal">
-            <h3>💧 Válvula 2</h3>
+            <h3> Válvula 2</h3>
 
             <label for="tipoValvula2">Tipo de accionamiento</label>
             <select id="tipoValvula2">
@@ -191,7 +143,7 @@
         </article>
 
         <article class="panel canal">
-            <h3>💧 Válvula 3</h3>
+            <h3> Válvula 3</h3>
 
             <label for="tipoValvula3">Tipo de accionamiento</label>
             <select id="tipoValvula3">
@@ -227,6 +179,7 @@
     </div>
 
 </section>
+<section id="vistaInicio" class="vista activa"></section>
         <section class="bienvenida">
             <div>
                 <p class="etiqueta">PANEL DE CONTROL</p>
@@ -288,6 +241,7 @@
 
         <!-- Ajustes y estado del equipo -->
         <section class="paneles">
+            </section>
 
             <article class="panel">
                 <h3>⚙️ Configuración del cultivo</h3>
