@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -12,29 +11,49 @@
 <body>
 
     <!-- Pantalla de acceso -->
-    <section id="pantallaLogin" class="login-page">
-        <div class="login-card">
-            <div class="logo">☀️🌱</div>
-            <h1>AquaSolar</h1>
-            <p class="subtitulo">Sistema de riego inteligente</p>
+ 
+<!-- Pantalla de acceso -->
+<section id="pantallaLogin" class="login-page">
+    <div class="login-card">
+        <div class="logo">🌱</div>
+        <h1>AquaSolar</h1>
+        <p class="subtitulo">Sistema de riego inteligente</p>
 
-            <form id="formLogin">
-                <label for="usuario">Usuario</label>
-                <input id="usuario" type="text" placeholder="Tu usuario" required>
+        <form id="formLogin">
+            <label for="usuario">Correo electrónico</label>
+            <input
+                id="usuario"
+                type="email"
+                placeholder="tu@correo.com"
+                autocomplete="email"
+                required
+            >
 
-                <label for="contrasena">Contraseña</label>
-                <input id="contrasena" type="password" placeholder="Tu contraseña" required>
+            <label for="contrasena">Contraseña</label>
+            <input
+                id="contrasena"
+                type="password"
+                placeholder="Tu contraseña"
+                autocomplete="current-password"
+                required
+            >
 
-                <button type="submit" class="boton-principal">
-                    Entrar al sistema
-                </button>
+            <button type="submit" class="boton-principal">
+                Iniciar sesión
+            </button>
 
-                <p id="mensajeLogin" class="mensaje"></p>
-            </form>
+            <button
+                id="btnRegistro"
+                type="button"
+                class="boton-secundario"
+            >
+                Crear una cuenta
+            </button>
 
-            <small>Prototipo</small>
-        </div>
-    </section>
+            <p id="mensajeLogin" class="mensaje" role="status" aria-live="polite"></p>
+        </form>
+    </div>
+</section>
 
     <!-- Panel principal -->
     <main id="dashboard" class="dashboard oculto">
@@ -145,7 +164,7 @@
                 </article>
 
                 <article class="panel">
-                    <h3>📡 Estado del equipo</h3>
+                    <h3> Estado del equipo</h3>
 
                     <div class="fila-estado">
                         <span>Placa ESP32</span>

@@ -2,30 +2,125 @@
 const pantallaLogin = document.getElementById("pantallaLogin");
 const dashboard = document.getElementById("dashboard");
 const formLogin = document.getElementById("formLogin");
+const mensajeLogin = document.getElementById("mensajeLogin");
+
+// Conectamos AquaSolar con nuestro proyecto de Supabase.
+const SUPABASE_URL = "PEGA_AQUI_TU_PROJECT_URL";
+const SUPABASE_KEY = "PEGA_AQUI_TU_PUBLISHABLE_KEY";
+
+const clienteSupabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
 let humedadActual = 42;
 let humedadObjetivo = 60;
 let litrosUsados = 128.4;
 let valvulaActiva = false;
 
-// Este acceso es solo para probar la interfaz, no es autenticación real.
-formLogin.addEventListener("submit", function(evento) {
+// Mostramos el panel cuando existe una sesión válida.
+function mostrarDashboard(usuario) {
+    pantallaLogin.classList.add("oculto");
+    dashboard.classList.remove("oculto");
+
+    document.getElementById("nombreUsuario").textContent =
+        usuario.email || "Usuario";
+}
+
+// Mostramos el login cuando no hay una sesión.
+function mostrarLogin() {
+    dashboard.classList.add("oculto");
+    pantallaLogin.classList.remove("oculto");
+}
+
+// Iniciar sesión con correo y contraseña.
+formLogin.addEventListener("submit", async function(evento) {
     evento.preventDefault();
 
-    const usuario = document.getElementById("usuario").value.trim();
+    const email = document.getElementById("usuario").value.trim();
     const contrasena = document.getElementById("contrasena").value;
-    const mensaje = document.getElementById("mensajeLogin");
 
-    if (usuario === "" || contrasena === "") {
-        mensaje.textContent = "Completa los dos campos.";
+    mensajeLogin.textContent = "Verificando acceso...";
+
+    const { data, error } = await clienteSupabase.auth.signInWithPassword({
+        email: email,
+        password: contrasena
+    });
+
+    if (error) {
+        mensajeLogin.textContent =
+            "No se pudo iniciar sesión. Revisa tus datos e inténtalo de nuevo.";
+        console.error("Error de inicio de sesión:", error.message);
         return;
     }
 
-    document.getElementById("nombreUsuario").textContent = usuario;
-
-    pantallaLogin.classList.add("oculto");
-    dashboard.classList.remove("oculto");
+    formLogin.reset();
+    mensajeLogin.textContent = "";
+    mostrarDashboard(data.user);
 });
+
+// Crear una cuenta nueva.
+document.getElementById("btnRegistro").addEventListener("click", async function() {
+    const email = document.getElementById("usuario").value.trim();
+    const contrasena = document.getElementById("contrasena").value;
+
+    if (!email || !contrasena) {
+        mensajeLogin.textContent =
+            "Escribe tu correo y una contraseña para registrarte.";
+        return;
+    }
+
+    mensajeLogin.textContent = "Creando cuenta...";
+
+    const { data, error } = await clienteSupabase.auth.signUp({
+        email: email,
+        password: contrasena
+    });
+
+    if (error) {
+        mensajeLogin.textContent =
+            "No se pudo crear la cuenta. Revisa los datos e inténtalo de nuevo.";
+        console.error("Error de registro:", error.message);
+        return;
+    }
+
+    if (data.session && data.user) {
+        formLogin.reset();
+        mensajeLogin.textContent = "";
+        mostrarDashboard(data.user);
+    } else {
+        mensajeLogin.textContent =
+            "Cuenta creada. Revisa tu correo para confirmar el registro.";
+    }
+});
+
+// Recuperamos la sesión y escuchamos cambios de autenticación.
+clienteSupabase.auth.onAuthStateChange(function(evento, sesion) {
+    if (sesion) {
+        mostrarDashboard(sesion.user);
+    } else {
+        mostrarLogin();
+    }
+});
+
+// Comprobamos si el usuario ya tenía una sesión al abrir la página.
+async function comprobarSesion() {
+    const { data, error } = await clienteSupabase.auth.getSession();
+
+    if (error) {
+        console.error("No se pudo comprobar la sesión:", error.message);
+        mostrarLogin();
+        return;
+    }
+
+    if (data.session) {
+        mostrarDashboard(data.session.user);
+    } else {
+        mostrarLogin();
+    }
+}
+
+comprobarSesion();
 
 // Actualiza los números y el estado visual del cultivo.
 function actualizarDashboard() {
