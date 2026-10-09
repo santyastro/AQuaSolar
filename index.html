@@ -1,35 +1,173 @@
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>AquaSolar</title>
-
+    <title>AquaSolar | Riego inteligente</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <h1>AquaSolar</h1>
+    <!-- Pantalla de acceso -->
+    <section id="pantallaLogin" class="login-page">
+        <div class="login-card">
+            <div class="logo">☀️🌱</div>
+            <h1>AquaSolar</h1>
+            <p class="subtitulo">Sistema de riego inteligente</p>
 
-    <p>Sistema de riego inteligente</p>
+            <form id="formLogin">
+                <label for="usuario">Usuario</label>
+                <input id="usuario" type="text"
+                    placeholder="Tu usuario" required>
 
-     <!-- login prueba -->
-    <h2> Login</h2>
+                <label for="contrasena">Contraseña</label>
+                <input id="contrasena" type="password"
+                    placeholder="Tu contraseña" required>
 
-    <p>Usuario</p>
-    <!-- añadimos identificadores "id" -->
-    <input type="text" id="usuario">
-    <p>Contraseña</p>
-    <input type="password" id="contrasenia">
+                <button type="submit" class="boton-principal">
+                    Entrar al sistema
+                </button>
 
-    <button onclick="iniciarSesion()">
-     Iniciar sesión
-    </button>
+                <p id="mensajeLogin" class="mensaje"></p>
+            </form>
+
+            <small>Prototipo educativo de AquaSolar</small>
+        </div>
+    </section>
+
+    <!-- Panel principal: empieza oculto -->
+    <main id="dashboard" class="dashboard oculto">
+
+        <header class="topbar">
+            <div class="marca">
+                <span class="marca-icono">☀️</span>
+                <div>
+                    <h2>AquaSolar</h2>
+                    <small>Riego inteligente</small>
+                </div>
+            </div>
+
+            <div class="usuario-info">
+                <span id="nombreUsuario">Usuario</span>
+                <button id="btnSalir" class="boton-secundario">
+                    Salir
+                </button>
+            </div>
+        </header>
+
+        <section class="bienvenida">
+            <div>
+                <p class="etiqueta">PANEL DE CONTROL</p>
+                <h1>Dashboard</h1>
+                <p>Monitorea tu cultivo desde un solo lugar.</p>
+            </div>
+
+            <span class="estado-conexion">
+                <span class="punto-verde"></span>
+                Modo demostración
+            </span>
+        </section>
+
+        <!-- Indicadores principales -->
+        <section class="tarjetas">
+
+            <article class="tarjeta">
+                <p>Humedad actual</p>
+                <div class="dato">
+                    <strong id="humedadActual">42</strong>
+                    <span>%</span>
+                </div>
+                <div class="barra">
+                    <div id="barraHumedad" class="barra-progreso"></div>
+                </div>
+                <small id="estadoCultivo">Humedad baja</small>
+            </article>
+
+            <article class="tarjeta">
+                <p>Humedad objetivo</p>
+                <div class="dato">
+                    <strong id="humedadObjetivoTexto">60</strong>
+                    <span>%</span>
+                </div>
+                <small>Meta configurada para el cultivo</small>
+            </article>
+
+            <article class="tarjeta">
+                <p>Agua utilizada</p>
+                <div class="dato">
+                    <strong id="litrosUsados">128.4</strong>
+                    <span>L</span>
+                </div>
+                <small>Consumo acumulado de demostración</small>
+            </article>
+
+            <article class="tarjeta">
+                <p>Válvula de riego</p>
+                <div class="dato">
+                    <strong id="estadoValvula">Apagada</strong>
+                </div>
+                <small id="textoValvula">Riego detenido</small>
+                <button id="btnValvula" class="boton-principal">
+                    Activar riego
+                </button>
+            </article>
+
+        </section>
+
+        <!-- Ajustes y estado del equipo -->
+        <section class="paneles">
+
+            <article class="panel">
+                <h3>⚙️ Configuración del cultivo</h3>
+                <p>Define la humedad que deseas mantener.</p>
+
+                <label for="objetivo">Humedad deseada (%)</label>
+
+                <div class="fila-ajuste">
+                    <input id="objetivo" type="number"
+                        min="1" max="100" value="60">
+                    <button id="btnGuardar" class="boton-principal">
+                        Guardar
+                    </button>
+                </div>
+
+                <p id="mensajeAjuste" class="mensaje"></p>
+            </article>
+
+            <article class="panel">
+                <h3>📡 Estado del equipo</h3>
+
+                <div class="fila-estado">
+                    <span>Placa ESP32</span>
+                    <span class="etiqueta-demo">Sin conectar</span>
+                </div>
+
+                <div class="fila-estado">
+                    <span>Sensor de humedad</span>
+                    <span class="etiqueta-demo">Dato simulado</span>
+                </div>
+
+                <div class="fila-estado">
+                    <span>Alimentación solar</span>
+                    <span class="etiqueta-demo">Sin conectar</span>
+                </div>
+
+                <button id="btnSimular" class="boton-secundario ancho">
+                    Simular lectura del sensor
+                </button>
+            </article>
+
+        </section>
+
+        <footer>
+            AquaSolar · Prototipo de riego inteligente · 2026
+        </footer>
+
+    </main>
+
     <script src="app.js"></script>
-
 </body>
-
 </html>
