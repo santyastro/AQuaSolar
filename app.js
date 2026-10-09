@@ -181,12 +181,18 @@ document.getElementById("btnSimular").addEventListener("click", function() {
 });
 
 // Regresa a la pantalla inicial.
-document.getElementById("btnSalir").addEventListener("click", function() {
-    dashboard.classList.add("oculto");
-    pantallaLogin.classList.remove("oculto");
-    formLogin.reset();
-});
 
+document.getElementById("btnSalir").addEventListener("click", async function() {
+    const { error } = await clienteSupabase.auth.signOut();
+
+    if (error) {
+        console.error("Error al cerrar sesión:", error.message);
+        return;
+    }
+
+    formLogin.reset();
+    mostrarLogin();
+});
 // Muestra los valores iniciales.
 actualizarDashboard();
 
