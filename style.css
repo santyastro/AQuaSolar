@@ -87,11 +87,13 @@ select:focus-visible {
     min-height: 100vh;
     display: grid;
 
-    /* La zona del formulario tendrá más espacio */
-    grid-template-columns: 0.85fr 1.4fr;
+    /* La imagen ocupa el espacio restante */
+    grid-template-columns: minmax(0, 1fr) minmax(430px, 38%);
 
-    align-items: center;
-    padding: 35px;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+
     position: relative;
     isolation: isolate;
     overflow: hidden;
@@ -124,18 +126,52 @@ select:focus-visible {
 /* 3. Formulario más ancho y situado a la derecha */
 .login-card {
     grid-column: 2;
-    justify-self: center;
 
-    width: min(100%, 560px);
-    max-width: 560px;
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+
+    /* Centra el contenido verticalmente */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    /* Espacio interior del formulario */
+    padding: clamp(32px, 5vw, 80px);
 
     background: #ffffff;
-    padding: 48px;
-    border-radius: 14px;
-    box-shadow: 0 18px 55px #102f201f;
+    border-radius: 0;
+    box-shadow: -12px 0 45px #102f2014;
 
     position: relative;
     z-index: 1;
+}
+
+/* Evita que el contenido se estire demasiado
+   en monitores grandes */
+.login-card > * {
+    width: 100%;
+    max-width: 460px;
+}
+
+/* En pantallas pequeñas, el panel ocupa todo
+   el ancho disponible */
+@media (max-width: 760px) {
+    .login-page {
+        grid-template-columns: 1fr;
+        padding: 0;
+    }
+
+    .login-page::before {
+        width: 35%;
+    }
+
+    .login-card {
+        grid-column: 1;
+        width: 100%;
+        min-height: 100vh;
+        padding: 32px 24px;
+    }
 }
 
 /* 4. Campos más altos y cómodos */
