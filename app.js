@@ -5,8 +5,10 @@ const formLogin = document.getElementById("formLogin");
 const mensajeLogin = document.getElementById("mensajeLogin");
 
 // Conectamos AquaSolar con nuestro proyecto de Supabase.
-const SUPABASE_URL = "PEGA_AQUI_TU_PROJECT_URL";
-const SUPABASE_KEY = "PEGA_AQUI_TU_PUBLISHABLE_KEY";
+//conecta con el proyecto
+const SUPABASE_URL = "https://rnwsceoyiptmdgbepoau.supabase.co";
+//api del proyecto(no incluir el api key privado)
+const SUPABASE_KEY = "sb_publishable_27jZrdS3SNHk27cFadlftg_s7WYzHvR";
 
 const clienteSupabase = window.supabase.createClient(
     SUPABASE_URL,
