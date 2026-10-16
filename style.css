@@ -82,18 +82,14 @@ select:focus-visible {
 
 /* Fondo de acceso: imagen a la izquierda y zona de login a la derecha */
 
-/* 1. Fondo general: imagen y formulario en dos columnas */
+/* Fondo: fotografía a la izquierda y acceso a la derecha */
 .login-page {
     min-height: 100vh;
     display: grid;
-
-    /* La imagen ocupa el espacio restante */
     grid-template-columns: minmax(0, 1fr) minmax(430px, 38%);
-
     align-items: stretch;
     gap: 0;
     padding: 0;
-
     position: relative;
     isolation: isolate;
     overflow: hidden;
@@ -107,45 +103,84 @@ select:focus-visible {
     background-repeat: no-repeat;
 }
 
-/* 2. Diagonal verde en el LADO IZQUIERDO */
+/* Diagonal verde a la izquierda */
 .login-page::before {
     content: "";
     position: absolute;
-    z-index: -1;
+    z-index: 0;
     top: 0;
-    left: 0; /* Antes estaba a la derecha */
+    left: 0;
     width: 29%;
     height: 100%;
     background: var(--verde-oscuro);
-
-    /* La inclinación forma la diagonal */
     clip-path: polygon(0 0, 100% 0, 58% 100%, 0 100%);
     opacity: 0.66;
+    pointer-events: none;
 }
 
-/* 3. Formulario más ancho y situado a la derecha */
+/* Panel blanco pegado a la derecha y de altura completa */
 .login-card {
     grid-column: 2;
-
+    grid-row: 1;
     width: 100%;
     max-width: none;
     min-height: 100vh;
+    margin: 0;
+    padding: 40px clamp(28px, 4vw, 60px);
 
-    /* Centra el contenido verticalmente */
     display: flex;
     flex-direction: column;
     justify-content: center;
-
-    /* Espacio interior del formulario */
-    padding: clamp(32px, 5vw, 80px);
+    align-items: flex-start;
 
     background: #ffffff;
     border-radius: 0;
-    box-shadow: -12px 0 45px #102f2014;
+    box-shadow: -12px 0 45px #164b3214;
 
     position: relative;
     z-index: 1;
 }
+
+/* Limita el ancho del contenido, no el del panel blanco */
+.login-card > * {
+    width: 100%;
+    max-width: 420px;
+}
+
+/* Logo único y proporcionado */
+.login-card .logo-aquasolar {
+    width: 150px;
+    height: 110px;
+    object-fit: contain;
+    object-position: left center;
+    margin: 0 0 18px;
+}
+
+/* Campos cómodos */
+.login-card input {
+    min-height: 48px;
+}
+
+/* Ajuste para celulares */
+@media (max-width: 760px) {
+    .login-page {
+        grid-template-columns: 1fr;
+    }
+
+    .login-card {
+        grid-column: 1;
+        grid-row: 1;
+        width: 100%;
+        min-height: 100vh;
+        padding: 30px 24px;
+    }
+
+    .login-card > *,
+    .login-card form {
+        max-width: 100%;
+    }
+}
+
 
 /* Evita que el contenido se estire demasiado
    en monitores grandes */
@@ -866,4 +901,4 @@ footer {
 .vista > .encabezado-vista {
     margin-top: 0;
 }
-
+/* Se agregó la clase .logo-aquasolar para ajustar el tamaño del logo en la pantalla de login. */
