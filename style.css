@@ -869,14 +869,14 @@ footer {
 }
 
 /* Logo completo: la imagen ya contiene el nombre de marca */
+/* Logo pequeño que aparece dentro del formulario */
 .login-card .logo-aquasolar {
     display: block;
-    width: 100%;
-    max-width: 330px;
-    height: auto;
-    max-height: 190px;
+    width: 140px;
+    height: 100px;
+    max-width: 100%;
     object-fit: contain;
-    margin: 0 auto 24px;
+    margin: 0 auto 18px;
 }
 
 /* Si el logo ya dice AquaSolar, no repetimos el título */
