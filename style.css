@@ -74,112 +74,6 @@ select:focus-visible {
 }
 
 
-/* ==========================================================
-   2. PANTALLA DE LOGIN
-   ========================================================== */
-
-/* Centra el formulario vertical y horizontalmente. */
-
-/* Fondo de acceso: imagen a la izquierda y zona de login a la derecha */
-
-/* Fondo: fotografía a la izquierda y acceso a la derecha */
-.login-page {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(430px, 38%);
-    align-items: stretch;
-    gap: 0;
-    padding: 0;
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-
-    background-image:
-        linear-gradient(90deg, #164b3210, #164b3230),
-        url("img/fondo-cultivo.jpg");
-
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-/* Diagonal verde a la izquierda */
-.login-page::before {
-    content: "";
-    position: absolute;
-    z-index: 0;
-    top: 0;
-    left: 0;
-    width: 29%;
-    height: 100%;
-    background: var(--verde-oscuro);
-    clip-path: polygon(0 0, 100% 0, 58% 100%, 0 100%);
-    opacity: 0.66;
-    pointer-events: none;
-}
-
-/* Panel blanco pegado a la derecha y de altura completa */
-.login-card {
-    grid-column: 2;
-    grid-row: 1;
-    width: 100%;
-    max-width: none;
-    min-height: 100vh;
-    margin: 0;
-    padding: 40px clamp(28px, 4vw, 60px);
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-
-    background: #ffffff;
-    border-radius: 0;
-    box-shadow: -12px 0 45px #164b3214;
-
-    position: relative;
-    z-index: 1;
-}
-
-/* Limita el ancho del contenido, no el del panel blanco */
-.login-card > * {
-    width: 100%;
-    max-width: 420px;
-}
-
-/* Logo único y proporcionado */
-.login-card .logo-aquasolar {
-    width: 150px;
-    height: 110px;
-    object-fit: contain;
-    object-position: left center;
-    margin: 0 0 18px;
-}
-
-/* Campos cómodos */
-.login-card input {
-    min-height: 48px;
-}
-
-/* Ajuste para celulares */
-@media (max-width: 760px) {
-    .login-page {
-        grid-template-columns: 1fr;
-    }
-
-    .login-card {
-        grid-column: 1;
-        grid-row: 1;
-        width: 100%;
-        min-height: 100vh;
-        padding: 30px 24px;
-    }
-
-    .login-card > *,
-    .login-card form {
-        max-width: 100%;
-    }
-}
 
 
 /* Evita que el contenido se estire demasiado
@@ -403,8 +297,13 @@ input {
 }
 
 /* Tamaño del símbolo que acompaña a AquaSolar. */
-.marca-icono {
-    font-size: 32px;
+
+/* Logo de AquaSolar en la barra superior */
+.marca-logo {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
 /* Evita márgenes innecesarios en el nombre y subtítulo. */
@@ -902,3 +801,143 @@ footer {
     margin-top: 0;
 }
 /* Se agregó la clase .logo-aquasolar para ajustar el tamaño del logo en la pantalla de login. */
+
+/* ==================================================
+   AQUASOLAR — LOGIN
+   Diseño dividido: fotografía izquierda, acceso derecha
+   ================================================== */
+
+.login-page {
+    width: 100%;
+    min-height: 100vh;
+    display: grid;
+
+    /* Proporción de cada lado de la pantalla */
+    grid-template-columns: 62% 38%;
+
+    padding: 0;
+    margin: 0;
+    gap: 0;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    /* Fotografía del cultivo */
+    background:
+        linear-gradient(#164b3210, #164b3210),
+        url("img/fondo-cultivo.jpg") center / cover no-repeat;
+}
+
+/* Diagonal verde sobre la fotografía */
+.login-page::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 29%;
+    height: 100%;
+    background: var(--verde-oscuro);
+    opacity: 0.82;
+    clip-path: polygon(0 0, 100% 0, 58% 100%, 0 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Panel de acceso: ocupa toda la columna derecha */
+.login-card {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: stretch;
+
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    min-height: 100vh;
+    margin: 0;
+    padding: 48px clamp(28px, 4vw, 64px);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: #ffffff;
+    border-radius: 0;
+    box-shadow: -10px 0 35px #164b3212;
+
+    position: relative;
+    z-index: 1;
+}
+
+/* Logo completo: la imagen ya contiene el nombre de marca */
+.login-card .logo-aquasolar {
+    display: block;
+    width: 100%;
+    max-width: 330px;
+    height: auto;
+    max-height: 190px;
+    object-fit: contain;
+    margin: 0 auto 24px;
+}
+
+/* Si el logo ya dice AquaSolar, no repetimos el título */
+.login-card h1 {
+    display: none;
+}
+
+/* Descripción debajo del logo */
+.login-card .subtitulo {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 0 22px;
+    text-align: left;
+    color: var(--gris);
+    font-size: 16px;
+}
+
+/* Formulario amplio y alineado */
+.login-card form {
+    width: 100%;
+    max-width: 420px;
+    margin-top: 0;
+    display: grid;
+    gap: 12px;
+}
+
+/* Campos de correo y contraseña */
+.login-card input {
+    width: 100%;
+    min-height: 50px;
+    padding: 14px;
+}
+
+/* Botones del acceso */
+.login-card button {
+    width: 100%;
+    min-height: 49px;
+}
+
+/* ==================================================
+   ADAPTACIÓN PARA CELULARES
+   ================================================== */
+
+@media (max-width: 760px) {
+    .login-page {
+        grid-template-columns: 1fr;
+        background-position: center;
+    }
+
+    .login-page::before {
+        width: 40%;
+    }
+
+    .login-card {
+        grid-column: 1;
+        grid-row: 1;
+        min-height: 100vh;
+        padding: 32px 24px;
+    }
+
+    .login-card .logo-aquasolar {
+        max-width: 280px;
+    }
+}
