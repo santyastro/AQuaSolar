@@ -872,8 +872,8 @@ footer {
 /* Logo pequeño que aparece dentro del formulario */
 .login-card .logo-aquasolar {
     display: block;
-    width: 140px;
-    height: 100px;
+    width: 160px;
+    height: 115px;
     max-width: 100%;
     object-fit: contain;
     margin: 0 auto 18px;
