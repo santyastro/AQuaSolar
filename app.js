@@ -385,3 +385,164 @@ window.addEventListener("resize", function() {
         dibujarGrafica();
     }
 });
+
+
+/* CONFIGURACIÓN DEL TERRENO */
+
+// Buscamos una ciudad o código postal usando OpenStreetMap.
+document.getElementById("btnBuscarUbicacion").addEventListener("click", async function() {
+    const busqueda = document.getElementById("busquedaUbicacion").value.trim();
+    const selector = document.getElementById("resultadoUbicacion");
+    const mensaje = document.getElementById("mensajeUbicacion");
+
+    if (!busqueda) {
+        mensaje.textContent = "Escribe una ciudad o código postal.";
+        return;
+    }
+
+    mensaje.textContent = "Buscando ubicaciones...";
+    selector.disabled = true;
+    selector.innerHTML = '<option value="">Buscando...</option>';
+
+    try {
+        const parametros = new URLSearchParams({
+            q: busqueda,
+            format: "jsonv2",
+            addressdetails: "1",
+            limit: "5"
+        });
+
+        const respuesta = await fetch(
+            "https://nominatim.openstreetmap.org/search?" + parametros.toString()
+        );
+
+        if (!respuesta.ok) {
+            throw new Error("No se pudo consultar el servicio.");
+        }
+
+        const lugares = await respuesta.json();
+
+        selector.innerHTML = "";
+
+        if (lugares.length === 0) {
+            selector.innerHTML = '<option value="">Sin resultados</option>';
+            mensaje.textContent = "No encontramos esa ubicación. Prueba con más detalles.";
+            return;
+        }
+
+        lugares.forEach(function(lugar, indice) {
+            const opcion = document.createElement("option");
+
+            opcion.value = String(indice);
+            opcion.textContent = lugar.display_name;
+            selector.appendChild(opcion);
+        });
+
+        // Conservamos las coordenadas que devuelve el servicio.
+        selector.dataset.resultados = JSON.stringify(
+            lugares.map(function(lugar) {
+                return {
+                    nombre: lugar.display_name,
+                    latitud: lugar.lat,
+                    longitud: lugar.lon
+                };
+            })
+        );
+
+        selector.disabled = false;
+        selector.selectedIndex = 0;
+        selector.dispatchEvent(new Event("change"));
+
+        mensaje.textContent = "Selecciona el resultado que corresponda a tu terreno.";
+
+    } catch (error) {
+        console.error("Error al buscar ubicación:", error);
+        selector.innerHTML = '<option value="">Error de búsqueda</option>';
+        mensaje.textContent =
+            "No se pudo consultar la ubicación. Revisa tu conexión e inténtalo de nuevo.";
+    }
+});
+
+// Mostramos las coordenadas de la ubicación seleccionada.
+document.getElementById("resultadoUbicacion").addEventListener("change", function() {
+    const selector = this;
+    const resultados = JSON.parse(selector.dataset.resultados || "[]");
+    const lugar = resultados[Number(selector.value)];
+
+    if (!lugar) {
+        document.getElementById("latitud").value = "";
+        document.getElementById("longitud").value = "";
+        return;
+    }
+
+    document.getElementById("latitud").value = lugar.latitud;
+    document.getElementById("longitud").value = lugar.longitud;
+});
+
+// Recuperamos los datos agrícolas guardados anteriormente.
+function cargarTerreno() {
+    const guardado = JSON.parse(
+        localStorage.getItem("configuracionTerrenoAquaSolar") || "null"
+    );
+
+    if (!guardado) return;
+
+    document.getElementById("tipoCultivo").value = guardado.cultivo || "";
+    document.getElementById("etapaCultivo").value = guardado.etapa || "";
+    document.getElementById("fuenteAgua").value = guardado.fuenteAgua || "";
+    document.getElementById("superficie").value = guardado.superficie || "";
+    document.getElementById("nombreRed").value = guardado.nombreRed || "";
+    document.getElementById("busquedaUbicacion").value = guardado.busqueda || "";
+    document.getElementById("latitud").value = guardado.latitud || "";
+    document.getElementById("longitud").value = guardado.longitud || "";
+}
+
+// Guardamos la configuración agrícola sin almacenar la contraseña Wi-Fi.
+document.getElementById("formTerreno").addEventListener("submit", function(evento) {
+    evento.preventDefault();
+
+    const superficie = Number(document.getElementById("superficie").value);
+    const nombreRed = document.getElementById("nombreRed").value.trim();
+    const contrasenaRed = document.getElementById("contrasenaRed").value;
+    const mensaje = document.getElementById("mensajeTerreno");
+
+    if (!Number.isFinite(superficie) || superficie <= 0) {
+        mensaje.textContent = "Introduce una superficie válida en hectáreas.";
+        return;
+    }
+
+    if (!nombreRed || !contrasenaRed) {
+        mensaje.textContent = "Completa el nombre y la contraseña de la red Wi-Fi.";
+        return;
+    }
+
+    const configuracion = {
+        cultivo: document.getElementById("tipoCultivo").value,
+        etapa: document.getElementById("etapaCultivo").value,
+        fuenteAgua: document.getElementById("fuenteAgua").value,
+        superficie: superficie,
+        nombreRed: nombreRed,
+        busqueda: document.getElementById("busquedaUbicacion").value.trim(),
+        latitud: document.getElementById("latitud").value,
+        longitud: document.getElementById("longitud").value
+    };
+
+    if (!configuracion.latitud || !configuracion.longitud) {
+        mensaje.textContent = "Busca y selecciona la ubicación antes de guardar.";
+        return;
+    }
+
+    localStorage.setItem(
+        "configuracionTerrenoAquaSolar",
+        JSON.stringify(configuracion)
+    );
+
+    mensaje.textContent =
+        "Configuración del terreno guardada en este navegador.";
+
+    // No persistimos la contraseña ni la mostramos en mensajes.
+    document.getElementById("contrasenaRed").value = "";
+});
+
+// Cargamos los datos anteriores al iniciar la página.
+cargarTerreno();

@@ -96,6 +96,9 @@
             <button class="pestana" data-vista="vistaEstado" type="button">
                 Estado y gráficas
             </button>
+            <button class="pestana" data-vista="vistaTerreno" type="button">
+    Configuración del terreno
+</button>
         </nav>
 
         <!-- VISTA 1: Inicio -->
@@ -344,6 +347,154 @@
                 </button>
             </article>
         </section>
+
+<!-- VISTA 4: Configuración del terreno (peticion y exigencia de william) --> 
+<section id="vistaTerreno" class="vista oculto">
+
+    <div class="encabezado-vista">
+        <p class="etiqueta">CONFIGURACIÓN AGRÍCOLA</p>
+        <h1>Configura tu terreno</h1>
+        <p>Personaliza AquaSolar según las características de tu cultivo.</p>
+    </div>
+
+    <form id="formTerreno">
+
+        <article class="panel">
+            <h3>Datos del cultivo</h3>
+
+            <div class="config-grid">
+                <div>
+                    <label for="tipoCultivo">Tipo de cultivo</label>
+                    <select id="tipoCultivo" required>
+                        <option value="">Selecciona un cultivo</option>
+                        <option value="maiz">Maíz</option>
+                        <option value="trigo">Trigo</option>
+                        <option value="frijol">Frijol</option>
+                        <option value="tomate">Tomate</option>
+                        <option value="chile">Chile</option>
+                        <option value="alfalfa">Alfalfa</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="etapaCultivo">Etapa de crecimiento</label>
+                    <select id="etapaCultivo" required>
+                        <option value="">Selecciona una etapa</option>
+                        <option value="germinacion">Germinación</option>
+                        <option value="vegetativo">Crecimiento vegetativo</option>
+                        <option value="floracion">Floración</option>
+                        <option value="fructificacion">Fructificación</option>
+                        <option value="maduracion">Maduración</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="fuenteAgua">Fuente de agua</label>
+                    <select id="fuenteAgua" required>
+                        <option value="">Selecciona una fuente</option>
+                        <option value="pozo">Pozo</option>
+                        <option value="presa">Presa o embalse</option>
+                        <option value="canal">Canal de riego</option>
+                        <option value="red">Red de agua</option>
+                        <option value="lluvia">Captación de lluvia</option>
+                        <option value="otra">Otra</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="superficie">Superficie del terreno (ha)</label>
+                    <input
+                        id="superficie"
+                        type="number"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="Ej. 5.5"
+                        required
+                    >
+                </div>
+            </div>
+        </article>
+
+        <article class="panel">
+            <h3>Conexión Wi-Fi del ESP32</h3>
+            <p>Introduce los datos de la red a la que se conectará el equipo.</p>
+
+            <label for="nombreRed">Nombre de la red (SSID)</label>
+            <input
+                id="nombreRed"
+                type="text"
+                maxlength="32"
+                autocomplete="off"
+                placeholder="Nombre de tu red"
+                required
+            >
+
+            <label for="contrasenaRed">Contraseña de la red</label>
+            <input
+                id="contrasenaRed"
+                type="password"
+                autocomplete="new-password"
+                placeholder="Contraseña Wi-Fi"
+                required
+            >
+
+            <small>
+                La contraseña solo se utilizará durante esta sesión de la página.
+                Todavía no se enviará al ESP32.
+            </small>
+        </article>
+
+        <article class="panel">
+            <h3>Ubicación del terreno</h3>
+            <p>Busca una ciudad o un código postal para consultar sus coordenadas.</p>
+
+            <label for="busquedaUbicacion">Ciudad o código postal</label>
+            <div class="fila-ajuste">
+                <input
+                    id="busquedaUbicacion"
+                    type="text"
+                    placeholder="Ej. Caborca, Sonora"
+                    required
+                >
+                <button
+                    id="btnBuscarUbicacion"
+                    class="boton-principal"
+                    type="button"
+                >
+                    Buscar
+                </button>
+            </div>
+
+            <label for="resultadoUbicacion">Selecciona la ubicación correcta</label>
+            <select id="resultadoUbicacion" disabled>
+                <option value="">Primero realiza una búsqueda</option>
+            </select>
+
+            <div class="config-grid">
+                <div>
+                    <label for="latitud">Latitud</label>
+                    <input id="latitud" type="text" readonly placeholder="Sin consultar">
+                </div>
+
+                <div>
+                    <label for="longitud">Longitud</label>
+                    <input id="longitud" type="text" readonly placeholder="Sin consultar">
+                </div>
+            </div>
+
+            <p id="mensajeUbicacion" class="mensaje" role="status"></p>
+        </article>
+
+        <div class="panel guardar-config">
+            <button class="boton-principal" type="submit">
+                Guardar configuración del terreno
+            </button>
+            <p id="mensajeTerreno" class="mensaje" role="status"></p>
+        </div>
+
+    </form>
+</section>
 
         <footer>
             AquaSolar · Prototipo de riego inteligente · 2026
