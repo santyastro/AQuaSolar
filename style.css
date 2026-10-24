@@ -941,3 +941,97 @@ footer {
         max-width: 280px;
     }
 }
+/* Clima del terreno en el dashboard */
+.clima-panel {
+    margin: 0 0 20px;
+    padding: 24px;
+}
+
+.clima-encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.clima-encabezado h2 {
+    margin: 4px 0;
+    font-size: 23px;
+}
+
+.clima-encabezado p {
+    margin-top: 4px;
+}
+
+.clima-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+}
+
+.clima-dato {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    background: var(--fondo);
+}
+
+.clima-dato span {
+    font-size: 14px;
+    color: var(--gris);
+}
+
+.clima-dato strong {
+    font-size: 26px;
+    overflow-wrap: anywhere;
+}
+
+.clima-principal {
+    background: var(--verde-claro);
+    border-color: #d5e8d8;
+}
+
+#climaMensaje {
+    color: var(--gris);
+    font-size: 13px;
+}
+
+#climaActualizado {
+    color: var(--gris);
+}
+
+@media (max-width: 900px) {
+    .clima-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .clima-panel {
+        padding: 16px;
+    }
+
+    .clima-encabezado {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .clima-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .clima-dato {
+        padding: 12px;
+    }
+
+    .clima-dato strong {
+        font-size: 22px;
+    }
+}

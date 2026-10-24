@@ -116,7 +116,55 @@
                     Modo demostración
                 </span>
             </section>
+<section class="panel clima-panel">
+    <div class="clima-encabezado">
+        <div>
+            <h3>Clima de tu terreno</h3>
+            <p id="climaUbicacion">Ubicación configurada en tu terreno</p>
+        </div>
 
+        <button id="btnActualizarClima"
+                class="boton-secundario"
+                type="button">
+            Actualizar
+        </button>
+    </div>
+
+    <p id="climaMensaje" class="mensaje">
+        Configura la ubicación de tu terreno para consultar el clima.
+    </p>
+
+    <div class="clima-grid">
+        <article class="clima-dato">
+            <span>Temperatura</span>
+            <strong><span id="climaTemperatura">--</span> °C</strong>
+        </article>
+
+        <article class="clima-dato">
+            <span>Condición</span>
+            <strong id="climaCondicion">--</strong>
+        </article>
+
+        <article class="clima-dato">
+            <span>Humedad ambiental</span>
+            <strong><span id="climaHumedad">--</span> %</strong>
+        </article>
+
+        <article class="clima-dato">
+            <span>Precipitación</span>
+            <strong><span id="climaLluvia">--</span> mm</strong>
+        </article>
+
+        <article class="clima-dato">
+            <span>Viento</span>
+            <strong><span id="climaViento">--</span> km/h</strong>
+        </article>
+    </div>
+
+    <small id="climaActualizado">
+        Datos meteorológicos pendientes.
+    </small>
+</section>
             <section class="tarjetas">
                 <article class="tarjeta">
                     <p>Humedad actual</p>

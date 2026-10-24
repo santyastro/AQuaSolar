@@ -546,3 +546,144 @@ document.getElementById("formTerreno").addEventListener("submit", function(event
 
 // Cargamos los datos anteriores al iniciar la página.
 cargarTerreno();
+/* ==========================================================
+   CLIMA DEL TERRENO
+   Consulta las condiciones meteorológicas según las
+   coordenadas guardadas en la configuración del terreno.
+   ========================================================== */
+
+// Convierte los códigos meteorológicos en descripciones.
+function describirClima(codigo) {
+    if (codigo === 0) return "Despejado";
+    if (codigo === 1) return "Mayormente despejado";
+    if (codigo === 2) return "Parcialmente nublado";
+    if (codigo === 3) return "Nublado";
+    if ([45, 48].includes(codigo)) return "Niebla";
+    if ([51, 53, 55, 56, 57].includes(codigo)) return "Llovizna";
+    if ([61, 63, 65, 66, 67, 80, 81, 82].includes(codigo)) {
+        return "Lluvia";
+    }
+    if ([71, 73, 75, 77, 85, 86].includes(codigo)) {
+        return "Nieve";
+    }
+    if ([95, 96, 99].includes(codigo)) return "Tormenta";
+    return "Condición meteorológica variable";
+}
+
+// Consulta el clima de la ubicación guardada.
+async function actualizarClima() {
+    const mensaje = document.getElementById("climaMensaje");
+    const boton = document.getElementById("btnActualizarClima");
+
+    const ubicacion = document.getElementById("climaUbicacion");
+    const temperatura = document.getElementById("climaTemperatura");
+    const humedad = document.getElementById("climaHumedad");
+    const lluvia = document.getElementById("climaLluvia");
+    const viento = document.getElementById("climaViento");
+    const condicion = document.getElementById("climaCondicion");
+    const actualizado = document.getElementById("climaActualizado");
+
+    const guardado = JSON.parse(
+        localStorage.getItem("configuracionTerrenoAquaSolar") || "null"
+    );
+
+    if (
+        !guardado ||
+        guardado.latitud === "" ||
+        guardado.longitud === "" ||
+        !Number.isFinite(Number(guardado.latitud)) ||
+        !Number.isFinite(Number(guardado.longitud))
+    ) {
+        ubicacion.textContent = "Configura primero la ubicación";
+        mensaje.textContent =
+            "Ve a Configuración del terreno y guarda una ubicación válida.";
+        return;
+    }
+
+    const lat = Number(guardado.latitud);
+    const lon = Number(guardado.longitud);
+
+    if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+        mensaje.textContent = "Las coordenadas guardadas no son válidas.";
+        return;
+    }
+
+    mensaje.textContent = "Consultando condiciones meteorológicas...";
+    boton.disabled = true;
+
+    try {
+        const parametros = new URLSearchParams({
+            latitude: String(lat),
+            longitude: String(lon),
+            current: [
+                "temperature_2m",
+                "relative_humidity_2m",
+                "precipitation",
+                "wind_speed_10m",
+                "weather_code"
+            ].join(","),
+            timezone: "auto"
+        });
+
+        const respuesta = await fetch(
+            "https://api.open-meteo.com/v1/forecast?" +
+            parametros.toString()
+        );
+
+        if (!respuesta.ok) {
+            throw new Error("El servicio meteorológico no respondió correctamente.");
+        }
+
+        const datos = await respuesta.json();
+        const actual = datos.current;
+
+        if (!actual) {
+            throw new Error("El servicio no devolvió condiciones actuales.");
+        }
+
+        temperatura.textContent =
+            `${actual.temperature_2m} °C`;
+
+        humedad.textContent =
+            `${actual.relative_humidity_2m} %`;
+
+        lluvia.textContent =
+            `${actual.precipitation} mm`;
+
+        viento.textContent =
+            `${actual.wind_speed_10m} km/h`;
+
+        condicion.textContent =
+            describirClima(actual.weather_code);
+
+        // Mostramos el texto de búsqueda que el usuario guardó.
+        ubicacion.textContent =
+            guardado.busqueda || `${lat}, ${lon}`;
+
+        mensaje.textContent = "Clima actualizado correctamente.";
+
+        actualizado.textContent =
+            "Hora de referencia: " +
+            actual.time.replace("T", " ") +
+            " (" + datos.timezone + ").";
+
+    } catch (error) {
+        console.error("Error al consultar el clima:", error);
+        mensaje.textContent =
+            "No se pudo consultar el clima. Revisa tu conexión e inténtalo de nuevo.";
+    } finally {
+        boton.disabled = false;
+    }
+}
+
+// Consultamos el clima al pulsar el botón.
+document.getElementById("btnActualizarClima")
+    .addEventListener("click", actualizarClima);
+
+// También lo consultamos al entrar al dashboard.
+const mostrarDashboardOriginal = mostrarDashboard;
+
+mostrarDashboard = function(usuario) {
+    mostrarDashboardOriginal(usuario);
+    actualizarClima();
+};
